@@ -1,0 +1,21 @@
+Code to load data in AWS S3 as AWS lambda Fuction:
+
+import csv
+import requests
+#all other apropriate libs already be loaded in lambda
+
+#properly call your s3 bucket
+s3 = boto3.resource('s3')
+bucket = s3.Bucket('your-bucket-name')
+key = 'yourfilename.txt'
+
+#you would need to grab the file from somewhere. Use this incomplete line below to get started:
+with requests.Session() as s:
+    getfile = s.get('yourfilelocation')
+
+#Only then you can write the data into the '/tmp' folder.
+with open('/tmp/yourfilename.txt', 'w', newline='') as f:
+    w = csv.writer(f)
+    w.writerows(filelist)
+#upload the data into s3
+bucket.upload_file('/tmp/yourfilename.txt', key)
